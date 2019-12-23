@@ -15,7 +15,7 @@ namespace Ketarin
     /// This class contains a collection of functions
     /// for reading from the database.
     /// </summary>
-    class DbManager
+    internal class DbManager
     {
         #region SettingsProvider
 
@@ -169,7 +169,7 @@ namespace Ketarin
                 if (m_DatabasePath == null)
                 {
                     // Only determine the path once
-                    string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Ketarin\\jobs.db";
+                    string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Ketarin", "jobs.db");
                     // Is a special path set in the registry?
                     string regPath = Settings.GetValue("Ketarin", "DatabasePath", "") as string;
                     if (!string.IsNullOrEmpty(regPath) && File.Exists(regPath))
@@ -193,7 +193,7 @@ namespace Ketarin
                     connString += "New=True;";
                 }
 
-                SQLiteConnection connection = new SQLiteConnection(connString);
+                SQLiteConnection connection = new SQLiteConnection(connString, true);
                 connection.Open();
 
                 return connection;
